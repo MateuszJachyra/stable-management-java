@@ -1,0 +1,28 @@
+# Android Studio
+.gradle
+.idea/
+build/
+local.properties
+captures/
+*.apk
+*.ap_
+*.aab
+*.keystore
+*.jks
+
+# Crashlytics
+com_crashlytics_export_strings.xml
+
+# Google Services
+google-services.json
+
+# Proguard
+proguard/
+
+# JaCoCo
+*.ec
+*.exec
+
+# Kover
+*.ic
+*.ktx
