@@ -1,8 +1,11 @@
 package com.example.stable_management_mobile.di
 
 import com.example.stable_management_mobile.data.remote.StableApi
+import com.example.stable_management_mobile.data.repository.HorseRepositoryImpl
 import com.example.stable_management_mobile.data.repository.StableRepositoryImpl
+import com.example.stable_management_mobile.domain.repository.HorseRepository
 import com.example.stable_management_mobile.domain.repository.StableRepository
+import com.example.stable_management_mobile.ui.screens.stables.StableDetailsViewModel
 import com.example.stable_management_mobile.ui.screens.stables.StablesViewModel
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -32,7 +35,15 @@ val appModule = module {
         StableRepositoryImpl(get())
     }
 
+    single<HorseRepository> {
+        HorseRepositoryImpl(get())
+    }
+
     viewModel{
         StablesViewModel(get())
+    }
+
+    viewModel{ params ->
+        StableDetailsViewModel(get(), params.get())
     }
 }
