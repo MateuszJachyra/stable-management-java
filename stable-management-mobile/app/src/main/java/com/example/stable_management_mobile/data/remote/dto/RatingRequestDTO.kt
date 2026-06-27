@@ -1,8 +1,6 @@
 package com.example.stable_management_mobile.data.remote.dto
 
-data class RatingResponseDTO(
-    val id: Int,
-    val horseId: Int,
+data class RatingRequestDTO (
     val value: Int,
     val description: String?
 )
