@@ -9,9 +9,11 @@ interface StableApi {
     @GET("/api/stables")
     suspend fun getAllStables(): List<StableResponseDTO>
 
+    @GET("/api/stables/{stableName}")
+    suspend fun getStableByName(@Path("stableName") stableName: String): StableResponseDTO
+
     @GET("/api/stables/{stableName}/horses")
     suspend fun getHorsesByStable(@Path("stableName") stableName: String): List<HorseResponseDTO>
 
-    @GET("/api/stables/{stableName}")
-    suspend fun getStableByName(@Path("stableName") stableName: String): StableResponseDTO
+
 }
