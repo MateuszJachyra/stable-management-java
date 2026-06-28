@@ -26,9 +26,9 @@ public class HorseController {
         return ResponseEntity.ok(stableService.getAllHorses());
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<HorseResponseDTO> getById(@PathVariable int id) {
-        return ResponseEntity.ok(stableService.findHorseById(id));
+    @GetMapping("/{horseId}")
+    public ResponseEntity<HorseResponseDTO> getById(@PathVariable int horseId) {
+        return ResponseEntity.ok(stableService.findHorseById(horseId));
     }
 
     @PostMapping
@@ -36,19 +36,40 @@ public class HorseController {
         return ResponseEntity.status(HttpStatus.CREATED).body(stableService.addHorse(dto.getStableName(), dto));
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteHorse(@PathVariable int id) {
-        stableService.deleteHorse(id);
+    @PutMapping("/{horseId}")
+    public ResponseEntity<HorseResponseDTO> updateHorse(@PathVariable int horseId,
+                                                        @Valid @RequestBody HorseDTO dto) {
+        return ResponseEntity.ok(stableService.updateHorse(horseId, dto));
+    }
+
+    @DeleteMapping("/{horseId}")
+    public ResponseEntity<Void> deleteHorse(@PathVariable int horseId) {
+        stableService.deleteHorse(horseId);
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/{id}/rating")
-    public ResponseEntity<List<RatingResponseDTO>> getRating(@PathVariable int id) {
-        return ResponseEntity.ok(stableService.getRatingsByHorseId(id));
+    @GetMapping("/{horseId}/ratings")
+    public ResponseEntity<List<RatingResponseDTO>> getRatings(@PathVariable int horseId) {
+        return ResponseEntity.ok(stableService.getRatingsByHorseId(horseId));
     }
 
-    @PostMapping("/rating")
-    public ResponseEntity<RatingResponseDTO> addRating(@Valid @RequestBody RatingDTO dto) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(stableService.addRating(dto.getHorseId(),dto.getValue()));
+    @PostMapping("/{horseId}/ratings")
+    public ResponseEntity<RatingResponseDTO> addRating(@PathVariable int horseId,
+                                                       @Valid @RequestBody RatingDTO dto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(
+                stableService.addRating(horseId, dto.getValue(), dto.getComment()));
+    }
+
+    @PutMapping("/{horseId}/ratings/{ratingId}")
+    public ResponseEntity<RatingResponseDTO> updateRating(@PathVariable int horseId,
+                                                          @PathVariable int ratingId,
+                                                          @Valid @RequestBody RatingDTO dto) {
+        return ResponseEntity.ok(stableService.updateRating(horseId, ratingId, dto));
+    }
+
+    @DeleteMapping("/{horseId}/ratings/{ratingId}")
+    public ResponseEntity<Void> deleteRating(@PathVariable int horseId, @PathVariable int ratingId) {
+        stableService.deleteRating(horseId, ratingId);
+        return ResponseEntity.noContent().build();
     }
 }

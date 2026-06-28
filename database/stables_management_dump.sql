@@ -49,7 +49,7 @@ CREATE TABLE `horses` (
 
 LOCK TABLES `horses` WRITE;
 /*!40000 ALTER TABLE `horses` DISABLE KEYS */;
-INSERT INTO `horses` VALUES (1,1,'Bob','Arabian','WARMBLOODED','HEALTHY',20,5500,800),(2,1,'Dob','Thoroughbred','COLDBLOODED','TRAINING',12,21000,500),(3,2,'Gob','Andalusian','COLDBLOODED','SICK',8,1400,300),(10,10,'Dob','Thoroughbred','COLDBLOODED','TRAINING',12,21000,500),(11,10,'Bob','Arabian','WARMBLOODED','HEALTHY',20,5500,800),(12,11,'Greg','Arabian','WARMBLOODED','HEALTHY',8,5000,450);
+INSERT INTO `horses` VALUES (1,1,'Bob','Arabian','WARMBLOODED','HEALTHY',20,5500,800),(2,1,'Dob','Thoroughbred','COLDBLOODED','TRAINING',12,21000,500),(3,2,'Gob','Andalusian','COLDBLOODED','SICK',8,1400,300),(10,10,'Dob','Thoroughbred','COLDBLOODED','TRAINING',12,21000,500),(11,10,'Bob','Arabian','WARMBLOODED','HEALTHY',20,5500,800);
 /*!40000 ALTER TABLE `horses` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -62,13 +62,13 @@ DROP TABLE IF EXISTS `ratings`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `ratings` (
   `rating_id` int NOT NULL AUTO_INCREMENT,
+  `value` int NOT NULL,
   `horse_id` int NOT NULL,
-  `rating` int NOT NULL,
+  `comment` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`rating_id`),
-  KEY `horse_id` (`horse_id`),
-  CONSTRAINT `ratings_ibfk_1` FOREIGN KEY (`horse_id`) REFERENCES `horses` (`horse_id`),
-  CONSTRAINT `ratings_chk_1` CHECK (((`rating` >= 1) and (`rating` <= 5)))
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  KEY `FKpq7ymxxmtlnl884xcpuhqudxc` (`horse_id`),
+  CONSTRAINT `FKpq7ymxxmtlnl884xcpuhqudxc` FOREIGN KEY (`horse_id`) REFERENCES `horses` (`horse_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -77,7 +77,7 @@ CREATE TABLE `ratings` (
 
 LOCK TABLES `ratings` WRITE;
 /*!40000 ALTER TABLE `ratings` DISABLE KEYS */;
-INSERT INTO `ratings` VALUES (1,1,4),(2,2,5),(3,1,2),(4,3,4),(5,1,1),(6,2,4),(7,2,3),(10,1,3),(11,10,5),(12,10,4),(13,10,3),(14,11,4),(15,11,2),(16,11,1),(17,11,3),(18,12,5);
+INSERT INTO `ratings` VALUES (1,2,1,NULL);
 /*!40000 ALTER TABLE `ratings` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -94,7 +94,7 @@ CREATE TABLE `stables` (
   `max_capacity` int NOT NULL,
   PRIMARY KEY (`stable_id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -103,7 +103,7 @@ CREATE TABLE `stables` (
 
 LOCK TABLES `stables` WRITE;
 /*!40000 ALTER TABLE `stables` DISABLE KEYS */;
-INSERT INTO `stables` VALUES (1,'stajnia1',20),(2,'stajnia2',10),(10,'stajnia3',20),(11,'Stajnia123',10);
+INSERT INTO `stables` VALUES (1,'stajnia1',20),(2,'stajnia2',10),(10,'stajnia3',20);
 /*!40000 ALTER TABLE `stables` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -143,4 +143,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-06-10 15:06:15
+-- Dump completed on 2026-06-28 22:25:31

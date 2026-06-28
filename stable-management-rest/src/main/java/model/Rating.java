@@ -9,34 +9,50 @@ public class Rating {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name="rating_id", unique=true, nullable=false)
     private int id;
-    @Column(name="rating", nullable=false)
-    private int rating;
+    @Column(name="value", nullable=false)
+    private int value;
+
+    @Column(name="comment")
+    private String comment;
 
     @ManyToOne
     @JoinColumn(name="horse_id", nullable=false)
     private Horse horse;
 
-    public Rating(int rating, Horse horse) {
-        this.rating = rating;
+    public Rating(int value, Horse horse,  String comment) {
+        this.value = value;
         this.horse = horse;
+        this.comment = comment;
     }
 
     protected Rating() {}
 
     @Override
     public String toString() {
-        return String.valueOf(rating);
+        return String.valueOf(value);
     }
 
     public Horse getHorse() {
         return horse;
     }
 
-    public int getRating() {
-        return rating;
+    public int getValue() {
+        return value;
     }
 
     public int getId() {
         return id;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setValue(int value) {
+        this.value = value;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 }

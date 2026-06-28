@@ -48,4 +48,9 @@ public class StableController {
         return ResponseEntity.ok(stableService.getHorsesSorted(name));
     }
 
+    @PutMapping("/{name}")
+    public ResponseEntity<StableResponseDTO> updateStable(@PathVariable String name,
+            @Valid @RequestBody StableDTO dto) {
+        return ResponseEntity.ok(stableService.updateStable(name, dto));
+    }
 }

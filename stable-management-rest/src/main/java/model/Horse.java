@@ -56,7 +56,7 @@ public class Horse implements Comparable<Horse> {
         }
         double averageRating = 0.0;
         for(Rating rating : ratings) {
-            averageRating += rating.getRating();
+            averageRating += rating.getValue();
         }
         return averageRating / ratings.size();
     }
@@ -84,9 +84,9 @@ public class Horse implements Comparable<Horse> {
         return ratings;
     }
 
-    public void addRating(int rating) throws HorseOperationException {
+    public void addRating(int rating, String comment) throws HorseOperationException {
         if(rating>=1 && rating<=5) {
-            ratings.add(new Rating(rating,this));
+            ratings.add(new Rating(rating,this, comment));
         }
         else {
             throw new HorseOperationException("Invalid rating");

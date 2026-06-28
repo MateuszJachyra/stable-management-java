@@ -5,11 +5,12 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 
 public class RatingDTO {
-    @NotNull
     private Integer horseId;
     @Min(1)
     @Max(5)
     private int value;
+
+    private String comment;
 
     public RatingDTO() {}
 
@@ -28,5 +29,13 @@ public class RatingDTO {
 
     public void setValue(int value) {
         this.value = value;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 }
