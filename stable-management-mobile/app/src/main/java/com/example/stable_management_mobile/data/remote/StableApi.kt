@@ -9,6 +9,7 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface StableApi {
     @GET("/api/stables")
@@ -28,5 +29,6 @@ interface StableApi {
                              @Body stableRequestDTO: StableRequestDTO): StableResponseDTO
 
     @DELETE("/api/stables/{stableName}")
-    suspend fun deleteStable(@Path("stableName") stableName: String): Unit
+    suspend fun deleteStable(@Path("stableName") stableName: String,
+                             @Query("force") force: Boolean): Unit
 }

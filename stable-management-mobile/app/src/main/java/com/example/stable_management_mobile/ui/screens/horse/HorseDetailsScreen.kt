@@ -1,4 +1,4 @@
-package com.example.stable_management_mobile.ui.screens.stables
+package com.example.stable_management_mobile.ui.screens.horse
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -23,9 +23,8 @@ import androidx.compose.ui.unit.sp
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun StableDetailsScreen(
-    viewModel: StableDetailsViewModel = koinViewModel(),
-    onHorseClicked: (Int) -> Unit
+fun HorseDetailsScreen(
+    viewModel: HorseDetailsViewModel = koinViewModel()
 ) {
     val state by viewModel.uiState.collectAsState()
 
@@ -50,27 +49,36 @@ fun StableDetailsScreen(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text(text=state.stableDetails!!.name.uppercase(), fontSize = 20.sp)
+                    Text(text=state.horse!!.name.uppercase(), fontSize = 20.sp)
                     Text(text="Edit button WIP")
                 }
-                Text(text="${state.stableDetails!!.horseCount}/${state.stableDetails!!.capacity}")
-                Text(text="${state.stableDetails!!.fillPercentage}% filled")
+                Text(text="""
+                    Average rating: ${"%.1f".format(state.horse!!.averageRating)}/5
+                    Type: ${state.horse!!.type.lowercase().replaceFirstChar { it.uppercase() }}
+                    Breed: ${state.horse!!.breed}
+                    Age: ${state.horse!!.age} years old
+                    Status: ${state.horse!!.status.lowercase().replaceFirstChar { it.uppercase() }}
+                    Price: $${"%.2f".format(state.horse!!.price)}
+                    Weight: ${"%.1f".format(state.horse!!.weight)} kg
+                """.trimIndent())
             }
             LazyColumn(
                 modifier = Modifier.fillMaxSize()
                     .padding(16.dp),
             ) {
-                items(items=state.horses) { horse ->
+                items(items=state.ratings) { rating ->
                     Card(
                         modifier = Modifier.fillMaxWidth()
                             .padding(vertical = 4.dp)
-                            .clickable(onClick = {onHorseClicked(horse.id)})
+                            .clickable(onClick = {})
                     ) {
                         Column(
                             modifier = Modifier.padding(8.dp),
                         ) {
-                            Text(text = horse.name)
-                            Text(text = "${horse.averageRating}")
+                            Text(text = rating.value.toString())
+                            if(rating.description!=null) {
+                                Text(text = rating.description)
+                            }
                         }
                     }
                 }

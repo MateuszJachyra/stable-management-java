@@ -1,10 +1,12 @@
 package com.example.stable_management_mobile.di
 
+import com.example.stable_management_mobile.data.remote.HorseApi
 import com.example.stable_management_mobile.data.remote.StableApi
 import com.example.stable_management_mobile.data.repository.HorseRepositoryImpl
 import com.example.stable_management_mobile.data.repository.StableRepositoryImpl
 import com.example.stable_management_mobile.domain.repository.HorseRepository
 import com.example.stable_management_mobile.domain.repository.StableRepository
+import com.example.stable_management_mobile.ui.screens.horse.HorseDetailsViewModel
 import com.example.stable_management_mobile.ui.screens.stables.StableDetailsViewModel
 import com.example.stable_management_mobile.ui.screens.stables.StablesViewModel
 import okhttp3.OkHttpClient
@@ -22,14 +24,16 @@ val appModule = module {
         OkHttpClient.Builder().addInterceptor(logging).build()
     }
 
-    single {
+    single<Retrofit> {
         Retrofit.Builder()
             .baseUrl("http://10.0.2.2:8080")
             .client(get())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-            .create(StableApi::class.java)
     }
+
+    single<StableApi> { get<Retrofit>().create(StableApi::class.java) }
+    single<HorseApi> { get<Retrofit>().create(HorseApi::class.java) }
 
     single<StableRepository> {
         StableRepositoryImpl(get())
@@ -45,5 +49,9 @@ val appModule = module {
 
     viewModel{ params ->
         StableDetailsViewModel(get(), params.get())
+    }
+
+    viewModel{ params ->
+        HorseDetailsViewModel(get(), params.get())
     }
 }

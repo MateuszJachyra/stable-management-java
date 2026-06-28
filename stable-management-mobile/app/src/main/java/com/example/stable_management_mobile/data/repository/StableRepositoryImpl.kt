@@ -25,11 +25,11 @@ class StableRepositoryImpl(
         return safeApiCall { api.addStable(stable) }
     }
 
-    override suspend fun updateStable(stable: StableRequestDTO, stableName: String): Result<StableResponseDTO> {
+    override suspend fun updateStable(stableName: String, stable: StableRequestDTO): Result<StableResponseDTO> {
         return safeApiCall { api.updateStable(stableName, stable) }
     }
 
-    override suspend fun deleteStable(stableName: String): Result<Unit> {
-        return safeApiCall { api.deleteStable(stableName) }
+    override suspend fun deleteStable(stableName: String, force: Boolean): Result<Unit> {
+        return safeApiCall { api.deleteStable(stableName,force) }
     }
 }

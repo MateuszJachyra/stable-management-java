@@ -13,7 +13,7 @@ interface StableRepository {
 
     suspend fun addStable(stable: StableRequestDTO): Result<StableResponseDTO>
 
-    suspend fun updateStable(stable: StableRequestDTO, stableName: String): Result<StableResponseDTO>
+    suspend fun updateStable(stableName: String, stable: StableRequestDTO): Result<StableResponseDTO>
 
-    suspend fun deleteStable(stableName: String): Result<Unit>
+    suspend fun deleteStable(stableName: String,force: Boolean = false): Result<Unit>
 }
