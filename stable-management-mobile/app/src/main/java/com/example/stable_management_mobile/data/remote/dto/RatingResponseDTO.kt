@@ -4,5 +4,5 @@ data class RatingResponseDTO(
     val id: Int,
     val horseId: Int,
     val value: Int,
-    val description: String?
+    val comment: String?
 )

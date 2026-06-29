@@ -35,16 +35,19 @@ fun AppNavigation() {
             route = Screen.StableDetails.route,
             arguments = listOf(navArgument("stableName") { type = NavType.StringType })
         ) {
-            StableDetailsScreen(onHorseClicked = { horseId ->
-                navController.navigate(Screen.HorseDetails.createRoute(horseId))
-            })
+            StableDetailsScreen(
+                onHorseClicked = { horseId ->
+                    navController.navigate(Screen.HorseDetails.createRoute(horseId))
+                },
+                onNavigateBack = { navController.popBackStack() }
+            )
         }
 
         composable(
             route = Screen.HorseDetails.route,
             arguments = listOf(navArgument("horseId") { type = NavType.IntType })
         ) {
-            HorseDetailsScreen()
+            HorseDetailsScreen(onNavigateBack = { navController.popBackStack() })
         }
     }
 

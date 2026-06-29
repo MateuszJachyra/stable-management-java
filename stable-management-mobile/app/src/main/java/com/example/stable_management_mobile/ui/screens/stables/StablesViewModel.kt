@@ -31,13 +31,12 @@ class StablesViewModel(
     private val _uiState = MutableStateFlow<StablesUiState>(StablesUiState())
     val uiState: StateFlow<StablesUiState> = _uiState
 
-    init {
-        fetchStables()
-    }
-
-    private fun fetchStables() {
+    fun refresh() {
         viewModelScope.launch {
-            _uiState.update { it.copy(isLoading = true) }
+            val showLoading = _uiState.value.stables.isEmpty()
+            if (showLoading) {
+                _uiState.update { it.copy(isLoading = true) }
+            }
             repository.getStables()
                 .onSuccess { stables ->
                     _uiState.update {
@@ -82,7 +81,7 @@ class StablesViewModel(
         _uiState.update { it.copy(stableName = name) }
     }
 
-    fun onMaxCapacityChanged(capacity: String) {
+    fun onCapacityChanged(capacity: String) {
         _uiState.update { it.copy(capacity = capacity)}
     }
 
@@ -120,7 +119,7 @@ class StablesViewModel(
 
             result.onSuccess {
                 onDismissForm()
-                fetchStables()
+                refresh()
             }.onFailure { error ->
                 _uiState.update {
                     it.copy(formErrorMessage = error.message ?: "Something went wrong")
@@ -135,7 +134,7 @@ class StablesViewModel(
             repository.deleteStable(stableToDelete.name, false)
                 .onSuccess {
                     onDismissForm()
-                    fetchStables()
+                    refresh()
                 }
                 .onFailure { error ->
                     if (error.message?.contains("Stable not empty", ignoreCase = true) == true) {
@@ -157,7 +156,7 @@ class StablesViewModel(
                 .onSuccess {
                     _uiState.update { it.copy(showForceDeleteDialog = false) }
                     onDismissForm()
-                    fetchStables()
+                    refresh()
                 }
                 .onFailure { error ->
                     _uiState.update{

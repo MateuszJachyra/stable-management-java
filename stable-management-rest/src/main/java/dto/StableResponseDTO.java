@@ -4,7 +4,7 @@ import model.Stable;
 public class StableResponseDTO {
     private int id;
     private String name;
-    private int maxCapacity;
+    private int capacity;
     private int horseCount;
     private double fillPercentage;
 
@@ -12,7 +12,7 @@ public class StableResponseDTO {
         StableResponseDTO dto = new StableResponseDTO();
         dto.id = stable.getId();
         dto.name = stable.getName();
-        dto.maxCapacity = stable.getMaxCapacity();
+        dto.capacity = stable.getMaxCapacity();
         dto.horseCount = stable.getHorses().size();
         dto.fillPercentage = stable.getFillPercentage();
         return dto;
@@ -26,8 +26,8 @@ public class StableResponseDTO {
         return name;
     }
 
-    public int getMaxCapacity() {
-        return maxCapacity;
+    public int getCapacity() {
+        return capacity;
     }
 
     public int getHorseCount() {

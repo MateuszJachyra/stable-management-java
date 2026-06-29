@@ -1,4 +1,4 @@
-package com.example.stable_management_mobile.ui.screens.stables
+package com.example.stable_management_mobile.ui.screens.horse
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -19,10 +19,10 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun StableForm(
-    state: StablesUiState,
-    onNameChange: (String) -> Unit,
-    onCapacityChange: (String) -> Unit,
+fun RatingForm(
+    state: HorseDetailsUiState,
+    onValueChange: (String) -> Unit,
+    onCommentChange: (String) -> Unit,
     onSave: () -> Unit,
     onDelete: (() -> Unit)?
 ) {
@@ -32,28 +32,29 @@ fun StableForm(
             .padding(16.dp)
             .padding(bottom = 32.dp)
     ) {
-        Text(text = state.formTitle, style = MaterialTheme.typography.headlineSmall)
+        Text(text = state.ratingFormTitle, style = MaterialTheme.typography.headlineSmall)
         Spacer(modifier = Modifier.height(16.dp))
 
         OutlinedTextField(
-            value = state.stableName,
-            onValueChange = onNameChange,
-            label = { Text("Stable Name") },
-            modifier = Modifier.fillMaxWidth(),
-            readOnly = state.stableSelected != null
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-
-        OutlinedTextField(value = state.capacity,
-            onValueChange = onCapacityChange,
-            label = { Text("Max Capacity") },
+            value = state.ratingValue,
+            onValueChange = onValueChange,
+            label = { Text("Rating (1-5)") },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             modifier = Modifier.fillMaxWidth()
         )
+        Spacer(modifier = Modifier.height(8.dp))
 
-        if (state.formErrorMessage != null) {
+
+        OutlinedTextField(
+            value = state.ratingComment ?: "",
+            onValueChange = onCommentChange,
+            label = { Text("Comment") },
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        if (state.ratingFormErrorMessage != null) {
             Text(
-                text = state.formErrorMessage,
+                text = state.ratingFormErrorMessage,
                 color = MaterialTheme.colorScheme.error,
                 modifier = Modifier.padding(top = 8.dp)
             )
@@ -66,19 +67,12 @@ fun StableForm(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             if (onDelete != null) {
-                Button(
-                    onClick = onDelete,
-                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
-                ) {
-                    Text("Delete")
-                }
+                Button(onClick = onDelete, colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.error)) { Text("Delete") }
             } else {
                 Spacer(modifier = Modifier.weight(1f))
             }
-
-            Button(onClick = onSave) {
-                Text("Save")
-            }
+            Button(onClick = onSave) { Text("Save") }
         }
     }
 }

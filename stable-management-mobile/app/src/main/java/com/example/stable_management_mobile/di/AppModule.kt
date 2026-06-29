@@ -48,10 +48,11 @@ val appModule = module {
     }
 
     viewModel{ params ->
-        StableDetailsViewModel(get(), params.get())
+        StableDetailsViewModel(get(),get(), params.get())
     }
 
     viewModel{ params ->
         HorseDetailsViewModel(get(), params.get())
     }
+
 }
