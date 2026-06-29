@@ -1,22 +1,24 @@
 # Stable Management - REST API
 
-Spring Boot HTTP API for managing horse stables. Same MySQL database as the console app.
+Spring Boot HTTP API for managing horse stables. Used by the **Android mobile client** and shareable with any HTTP client.
 
 **Base URL:** `http://localhost:8080`
 
 ## What it does
 
-- CRUD operations on **stables** and **horses** (by stable name or horse id).
-- **Ratings** per horse (1-5).
-- **DTOs** for request validation and safe JSON responses (no entity cycles).
-- Central **error handling** via `GlobalExceptionHandler`.
+- CRUD on **stables** and **horses**
+- **Ratings** per horse (1–5, optional comment)
+- DTOs for request validation and JSON responses
+- Central error handling via `GlobalExceptionHandler`
+
+**Authentication:** none (open endpoints for demo / portfolio).
 
 ## Tech stack
 
-- Java 25, Maven
+- Java 21, Maven
 - Spring Boot 4.x (Web, Data JPA, Validation)
 - MySQL 8
-- Hibernate (via Spring Data JPA)
+- Docker (optional, see below)
 
 ## Project structure
 
@@ -31,12 +33,21 @@ src/main/java/
   exception/GlobalExceptionHandler.java
 ```
 
-## Prerequisites
-
-1. MySQL with database `stables_management` (see [../database/README.md](../database/README.md)).
-2. Optional: import `../database/stable_management_dump.sql` for sample data.
-
 ## How to run
+
+### Docker (recommended)
+
+From the repository root:
+
+```bash
+docker compose up --build
+```
+
+Starts MySQL + this API. See [../README.md](../README.md).
+
+### Local (IDE / Maven)
+
+**Prerequisites:** MySQL with database `stables_management` (see [../database/README.md](../database/README.md)).
 
 ```bash
 cd stable-management-rest
@@ -45,7 +56,7 @@ mvn spring-boot:run
 
 Or run `app.StableManagerApplication` from your IDE.
 
-Server starts on port **8080** (configurable in `application.properties`).
+Server listens on port **8080**.
 
 ## Configuration
 
@@ -59,13 +70,11 @@ spring.datasource.password=admin
 spring.jpa.hibernate.ddl-auto=update
 ```
 
-## Authentication
-
-**None.** All endpoints are open. User accounts (`admin` / `admin`) exist in the database for the **console app only**.
+In Docker, datasource settings are overridden by environment variables in `docker-compose.yml`.
 
 ## API reference
 
-All requests with a body must use header:
+All requests with a body must use:
 
 ```http
 Content-Type: application/json
@@ -78,6 +87,7 @@ Content-Type: application/json
 | `GET` | `/api/stables` | List all stables | `200` |
 | `GET` | `/api/stables/{name}` | Get one stable by name | `200` |
 | `POST` | `/api/stables` | Create stable | `201` |
+| `PUT` | `/api/stables/{name}` | Update stable capacity | `200` |
 | `DELETE` | `/api/stables/{name}` | Delete empty stable | `204` |
 | `DELETE` | `/api/stables/{name}?force=true` | Delete stable and all horses | `204` |
 | `GET` | `/api/stables/{name}/horses` | Horses in stable, sorted by avg rating | `200` |
@@ -99,18 +109,24 @@ Content-Type: application/json
 {
   "id": 1,
   "name": "north",
-  "maxCapacity": 10,
+  "capacity": 10,
   "horseCount": 0,
   "fillPercentage": 0.0
 }
 ```
 
-**curl:**
-
 ```bash
 curl -X POST http://localhost:8080/api/stables \
   -H "Content-Type: application/json" \
   -d "{\"name\":\"north\",\"capacity\":10}"
+```
+
+#### `PUT /api/stables/{name}` - update capacity
+
+```bash
+curl -X PUT http://localhost:8080/api/stables/north \
+  -H "Content-Type: application/json" \
+  -d "{\"name\":\"north\",\"capacity\":15}"
 ```
 
 #### `GET /api/stables`
@@ -144,11 +160,14 @@ curl -X DELETE "http://localhost:8080/api/stables/north?force=true"
 | `GET` | `/api/horses` | List all horses | `200` |
 | `GET` | `/api/horses/{id}` | Get horse by id | `200` |
 | `POST` | `/api/horses` | Add horse to stable | `201` |
+| `PUT` | `/api/horses/{id}` | Update horse | `200` |
 | `DELETE` | `/api/horses/{id}` | Delete horse | `204` |
-| `GET` | `/api/horses/{id}/rating` | List all ratings for horse | `200` |
-| `POST` | `/api/horses/rating` | Add rating to horse | `201` |
+| `GET` | `/api/horses/{id}/ratings` | List ratings for horse | `200` |
+| `POST` | `/api/horses/{id}/ratings` | Add rating | `201` |
+| `PUT` | `/api/horses/{id}/ratings/{ratingId}` | Update rating | `200` |
+| `DELETE` | `/api/horses/{id}/ratings/{ratingId}` | Delete rating | `204` |
 
-#### Horse enums (JSON values - uppercase)
+#### Horse enums (JSON - uppercase)
 
 | Field | Allowed values |
 |-------|----------------|
@@ -189,48 +208,35 @@ curl -X DELETE "http://localhost:8080/api/stables/north?force=true"
 }
 ```
 
-**curl:**
-
 ```bash
 curl -X POST http://localhost:8080/api/horses \
   -H "Content-Type: application/json" \
   -d "{\"name\":\"Bob\",\"breed\":\"Arabian\",\"type\":\"WARMBLOODED\",\"status\":\"HEALTHY\",\"age\":8,\"price\":5000,\"weight\":450,\"stableName\":\"north\"}"
 ```
 
-#### `POST /api/horses/rating` - add rating
+#### `POST /api/horses/{id}/ratings` - add rating
 
 **Body:**
 
 ```json
 {
-  "horseId": 1,
-  "value": 4
+  "value": 4,
+  "comment": "Good temperament"
 }
 ```
 
 `value` must be between **1** and **5**.
 
-**Response `201`:**
-
-```json
-{
-  "horseId": 1,
-  "rating": 4
-}
-```
-
-**curl:**
-
 ```bash
-curl -X POST http://localhost:8080/api/horses/rating \
+curl -X POST http://localhost:8080/api/horses/1/ratings \
   -H "Content-Type: application/json" \
-  -d "{\"horseId\":1,\"value\":4}"
+  -d "{\"value\":4,\"comment\":\"Good temperament\"}"
 ```
 
-#### `GET /api/horses/{id}/rating`
+#### `GET /api/horses/{id}/ratings`
 
 ```bash
-curl http://localhost:8080/api/horses/1/rating
+curl http://localhost:8080/api/horses/1/ratings
 ```
 
 ---
@@ -246,34 +252,33 @@ Handled by `GlobalExceptionHandler`:
 | Validation failed (`@Valid`) | `400` | `{"errors":{"name":"Stable name is required"}}` |
 | Invalid JSON or enum | `400` | `{"error":"Invalid JSON or enum value"}` |
 
-## Suggested Postman workflow
-
-1. `POST /api/stables` - create a stable.
-2. `POST /api/horses` - add a horse (use `stableName` from step 1).
-3. `POST /api/horses/rating` - rate the horse (`horseId` from step 2 response).
-4. `GET /api/stables/{name}/horses` - see sorted list with `averageRating`.
-5. `GET /api/stables` - see occupancy (`horseCount`, `fillPercentage`).
-
 ## Response DTO fields
 
-**StableResponseDTO:** `id`, `name`, `maxCapacity`, `horseCount`, `fillPercentage`
+**StableResponseDTO:** `id`, `name`, `capacity`, `horseCount`, `fillPercentage`
 
 **HorseResponseDTO:** `id`, `name`, `breed`, `type`, `status`, `age`, `price`, `weight`, `stableName`, `averageRating`
 
-**RatingResponseDTO:** `horseId`, `rating`
+**RatingResponseDTO:** `id`, `horseId`, `value`, `comment`
 
-## Relationship to console app
+## Suggested workflow
 
-Uses the same `stables_management` database. Data created via Postman appears in the console app and vice versa.
+1. `POST /api/stables` - create a stable
+2. `POST /api/horses` - add a horse (`stableName` from step 1)
+3. `POST /api/horses/{id}/ratings` - rate the horse
+4. `GET /api/stables/{name}/horses` - see sorted list with `averageRating`
+5. `GET /api/stables` - see occupancy (`horseCount`, `fillPercentage`)
 
-Console app enforces **admin/user** login; this REST API does not.
+## Mobile client
+
+The Android app in [../stable-management-mobile](../stable-management-mobile/) consumes this API via Retrofit.
 
 ## Troubleshooting
 
 | Problem | Check |
 |---------|--------|
-| App won't start | MySQL running, `username`/`password` in `application.properties` |
+| App won't start | MySQL running; credentials in `application.properties` or Docker env |
+| Docker DB empty after failed init | `docker compose down -v` then `up` again; verify dump path in `docker-compose.yml` |
 | `404` on create horse | `stableName` must match an existing stable |
-| `400` invalid enum | Use exact enum names: `WARMBLOODED`, not `Warmblooded` |
-| `400` validation | `capacity` >= 1 on stable; `horseId` required on rating |
-| Port in use | Change `server.port` in `application.properties` |
+| `400` invalid enum | Use exact names: `WARMBLOODED`, not `Warmblooded` |
+| `400` validation | `capacity` >= 1 on stable; rating `value` in 1–5 |
+| Port in use | Change `server.port` or stop other process on 8080 |
