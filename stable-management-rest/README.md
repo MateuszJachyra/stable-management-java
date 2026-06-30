@@ -19,17 +19,19 @@ Spring Boot HTTP API for managing horse stables. Used by the **Android mobile cl
 - Spring Boot 4.x (Web, Data JPA, Validation)
 - MySQL 8
 - Docker (optional, see below)
+- OpenAPI
 
 ## Project structure
 
 ```text
-src/main/java/
-  app/StableManagerApplication.java   Spring Boot entry point
+src/main/java/app/
+  StableManagerApplication.java   Spring Boot entry point
   controller/                         REST endpoints
   service/StableService.java          Business logic (@Transactional)
   repository/                         Spring Data JpaRepository
   model/                              JPA entities
   dto/                                Request/response DTOs
+  config/OpenApiConfig.java           OpenAPI configuration
   exception/GlobalExceptionHandler.java
 ```
 
@@ -71,6 +73,11 @@ spring.jpa.hibernate.ddl-auto=update
 ```
 
 In Docker, datasource settings are overridden by environment variables in `docker-compose.yml`.
+
+## OpenAPI
+
+After starting the server, open the full documentation for the REST API on https://localhost:8080/swagger-ui/index.html.
+
 
 ## API reference
 

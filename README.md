@@ -6,7 +6,7 @@ Portfolio project for managing horse stables: a **Spring Boot REST API**, an **A
 
 | Folder | Description | Stack |
 |--------|-------------|--------|
-| [stable-management-rest](stable-management-rest/) | HTTP JSON API | Java 21, Spring Boot 4, JPA, MySQL |
+| [stable-management-rest](stable-management-rest/) | HTTP JSON API | Java 21, Spring Boot 4, JPA, MySQL, Swagger/OpenAPI |
 | [stable-management-mobile](stable-management-mobile/) | Android client | Kotlin, Jetpack Compose, Retrofit, Koin |
 | [database](database/) | Schema + sample data | MySQL 8 dump |
 | stable-management-console | Legacy terminal UI (optional) | Java, Maven, JPA |
@@ -32,11 +32,7 @@ This starts:
 - **MySQL 8** on port `3306` with database `stables_management` (seeded from the SQL dump on first run)
 - **REST API** on [http://localhost:8080](http://localhost:8080)
 
-Verify the API:
-
-```bash
-curl http://localhost:8080/api/stables
-```
+Verify the API: on https://localhost:8080/swagger-ui/index.html
 
 Stop containers:
 
