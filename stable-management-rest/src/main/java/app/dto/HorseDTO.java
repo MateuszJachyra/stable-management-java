@@ -1,7 +1,7 @@
-package dto;
+package app.dto;
 
-import enumeration.HorseStatus;
-import enumeration.HorseType;
+import app.enumeration.HorseStatus;
+import app.enumeration.HorseType;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

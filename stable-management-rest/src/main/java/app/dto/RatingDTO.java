@@ -1,4 +1,4 @@
-package dto;
+package app.dto;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;

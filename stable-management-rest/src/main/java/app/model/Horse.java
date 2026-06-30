@@ -1,8 +1,8 @@
-package model;
+package app.model;
 
-import enumeration.HorseStatus;
-import enumeration.HorseType;
-import exception.HorseOperationException;
+import app.enumeration.HorseStatus;
+import app.enumeration.HorseType;
+import app.exception.HorseOperationException;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;

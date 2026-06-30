@@ -1,4 +1,4 @@
-package exception;
+package app.exception;
 
 public class HorseOperationException extends RuntimeException {
     public HorseOperationException(String message) {

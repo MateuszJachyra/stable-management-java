@@ -1,6 +1,6 @@
-package dto;
+package app.dto;
 
-import model.Rating;
+import app.model.Rating;
 
 public class RatingResponseDTO {
     private int id;

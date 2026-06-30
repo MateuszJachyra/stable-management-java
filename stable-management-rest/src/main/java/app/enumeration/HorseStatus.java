@@ -1,4 +1,4 @@
-package enumeration;
+package app.enumeration;
 
 public enum HorseStatus {
     HEALTHY(1), SICK(2), TRAINING(3), SOLD(4);

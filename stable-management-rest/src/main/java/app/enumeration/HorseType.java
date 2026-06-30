@@ -1,4 +1,4 @@
-package enumeration;
+package app.enumeration;
 
 public enum HorseType {
     COLDBLOODED(1), WARMBLOODED(2);

@@ -1,6 +1,6 @@
-package model;
+package app.model;
 
-import exception.StableOperationException;
+import app.exception.StableOperationException;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;

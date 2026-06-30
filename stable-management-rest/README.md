@@ -54,7 +54,7 @@ cd stable-management-rest
 mvn spring-boot:run
 ```
 
-Or run `app.StableManagerApplication` from your IDE.
+Or run `app.StableManagementApplication` from your IDE.
 
 Server listens on port **8080**.
 

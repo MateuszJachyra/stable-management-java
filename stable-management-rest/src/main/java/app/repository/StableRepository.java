@@ -1,6 +1,6 @@
-package repository;
+package app.repository;
 
-import model.Stable;
+import app.model.Stable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

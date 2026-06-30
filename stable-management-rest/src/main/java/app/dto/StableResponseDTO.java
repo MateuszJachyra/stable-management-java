@@ -1,5 +1,5 @@
-package dto;
-import model.Stable;
+package app.dto;
+import app.model.Stable;
 
 public class StableResponseDTO {
     private int id;

@@ -1,4 +1,4 @@
-package exception;
+package app.exception;
 
 public class StableOperationException extends RuntimeException {
     public StableOperationException(String message) {

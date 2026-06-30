@@ -1,6 +1,6 @@
-package dto;
+package app.dto;
 
-import model.Horse;
+import app.model.Horse;
 
 public class HorseResponseDTO {
     private int id;
