@@ -76,7 +76,7 @@ In Docker, datasource settings are overridden by environment variables in `docke
 
 ## OpenAPI
 
-After starting the server, open the full documentation for the REST API on https://localhost:8080/swagger-ui/index.html.
+After starting the server, open the full documentation for the REST API on http://localhost:8080/swagger-ui/index.html.
 
 
 ## API reference

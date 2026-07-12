@@ -32,7 +32,7 @@ This starts:
 - **MySQL 8** on port `3306` with database `stables_management` (seeded from the SQL dump on first run)
 - **REST API** on [http://localhost:8080](http://localhost:8080)
 
-Verify the API: on https://localhost:8080/swagger-ui/index.html
+Verify the API: on http://localhost:8080/swagger-ui/index.html
 
 Stop containers:
 
